@@ -1,0 +1,336 @@
+:root {
+  /* Primary Colors */
+  --primary-coral: #FF8370;
+  --primary-brown: #462B25;
+  
+  /* Additional shades */
+  --coral-light: #FFB4A8;
+  --coral-dark: #E66B58;
+  --brown-light: #6E4C45;
+  --brown-dark: #2E1C18;
+  
+  /* Neutral colors */
+  --white: #FFFFFF;
+  --background: #FAFAFA;
+}
+
+/* Move these styles to the top, right after :root */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--primary-brown);
+  background-color: var(--background);
+  min-height: 100vh;
+}
+::-webkit-scrollbar {
+  width: 7px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary-coral);
+}
+
+/* Primary buttons */
+.btn-primary {
+  background-color: var(--primary-coral);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(255, 131, 112, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: var(--coral-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 131, 112, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Secondary buttons */
+.btn-secondary {
+  background-color: var(--white);
+  color: var(--primary-coral);
+  border: 2px solid var(--primary-coral);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--primary-coral);
+  color: var(--white);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--primary-brown);
+  font-weight: 700;
+}
+
+/* Links */
+a {
+  color: var(--primary-coral);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--coral-dark);
+}
+
+/* Cards */
+.card {
+  background: var(--white);
+  border-radius: 12px;
+  border: 1px solid rgba(70, 43, 37, 0.1);
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(70, 43, 37, 0.08);
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+/* Navigation */
+nav {
+  background-color: var(--primary-brown);
+  padding: 20px;
+  margin-bottom: 40px;
+  box-shadow: 0 2px 8px rgba(70, 43, 37, 0.2);
+}
+
+nav a {
+  color: var(--white);
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  margin-right: 20px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  background-color: var(--primary-coral);
+  color: var(--primary-brown);
+}
+
+/* Card variations */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(70, 43, 37, 0.1);
+}
+
+/* Loading state */
+.loading {
+  color: var(--primary-coral);
+  font-weight: 500;
+  text-align: center;
+  padding: 40px;
+}
+
+/* Add page content wrapper */
+.page-content {
+  padding: 0 20px;
+}
+
+/* Add section styles */
+.section {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: var(--primary-brown);
+  border-bottom: 2px solid var(--primary-coral);
+  padding-bottom: 10px;
+}
+
+/* Add these new styles */
+
+/* Form inputs */
+input {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+input:focus {
+  border-color: var(--coral-dark) !important;
+  box-shadow: 0 0 0 2px rgba(255, 131, 112, 0.2);
+}
+
+/* Chat container scrollbar */
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: var(--primary-coral);
+  border-radius: 4px;
+}
+
+/* Card variations */
+.card-highlight {
+  border-left: 4px solid var(--primary-coral);
+}
+
+/* Section header with action */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* Update these styles for the chat mode buttons */
+.chat-mode-buttons-container {
+  display: flex;
+  gap: 10px;
+  background-color: var(--background);
+  padding: 4px;
+  border-radius: 8px;
+  min-height: 40px;
+  align-items: center;
+}
+
+.chat-mode-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center;
+  text-transform: none;
+  min-width: 120px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: 8px;
+  border: 2px solid var(--primary-coral);
+  background-color: var(--white);
+  color: var(--primary-coral);
+  cursor: pointer;
+  font-weight: 600;
+  overflow: hidden;
+  will-change: transform;
+  backface-visibility: hidden;
+  /* Improve text rendering during transforms */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.chat-mode-btn::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background-color: var(--primary-coral);
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.chat-mode-btn span {
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  backface-visibility: hidden;
+  /* Ensure smoother text rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transform: translateZ(0);
+}
+
+.chat-mode-btn.active {
+  transform: scale(1.1); /* Slightly lower scale to minimize distortion */
+  color: var(--white);
+}
+
+.chat-mode-btn.active::before {
+  opacity: 1;
+}
+
+
+
+/* Remove these hover styles
+.chat-mode-btn:hover {
+  transform: scale(1.05);
+}
+
+.chat-mode-btn.active:hover {
+  transform: scale(1.05);
+}
+*/
