@@ -77,7 +77,7 @@ The webapp will run on http://localhost:3000/, where you can interact with the a
 ### Workout Plan View
 ![image](https://github.com/user-attachments/assets/eae7e9ba-4518-4662-aa24-a7a1a4a66a1a)
 
-## Workout Plan Generation In-Chat
+### Workout Plan Generation In-Chat
 ![image](https://github.com/user-attachments/assets/b0d2285a-bace-4da1-8a65-e5e0a043f8e2)
 ![image](https://github.com/user-attachments/assets/3ec9ba7f-f45c-4d20-ad58-be384c445974)
 
