@@ -7,20 +7,20 @@ This tool allows a user to request a workout plan with constraints, such as how 
 ## Running the Application
 
 ### Dependencies
-- Backend
-  - Python 3.11+
-  - Flask 3.0.3
-  - Requests 2.32.3
-  - Pymongo 4.11.2
-  - Flask CORS 5.0.1
+Backend
+- Python 3.11+
+- Flask 3.0.3
+- Requests 2.32.3
+- Pymongo 4.11.2
+- Flask CORS 5.0.1
 
 Install Python libraries:
 ```bash
 pip install flask flask-cors requests pymongo
 ```
-- Frontend
-  - Node 20+
-  - 
+Frontend
+- Node 20+
+
 Install all frontend dependencies:
 ```bash
 npm install
