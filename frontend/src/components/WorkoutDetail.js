@@ -9,7 +9,7 @@ const WorkoutDetail = () => {
 
   const fetchWorkout = useCallback(async () => {
     try {
-      const response = await axios.get(`${BACKEND_SERVER}/workouts/${id}`);
+      const response = await axios.get(`${process.env.BACKEND_SERVER}/workouts/${id}`);
       setWorkout(response.data);
     } catch (error) {
       console.error("Error fetching workout details", error);

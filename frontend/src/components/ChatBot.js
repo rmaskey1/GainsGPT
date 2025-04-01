@@ -20,7 +20,7 @@ const ChatBot = () => {
     setMessages(prev => [...prev, userMessage]);
 
     try {
-      const response = await axios.post(`${BACKEND_SERVER}/chat`, {
+      const response = await axios.post(`${process.env.BACKEND_SERVER}/chat`, {
         message: input,
         isWorkoutRequest: chatType === 'workout'
       });
