@@ -1,4 +1,4 @@
-
+const webpack = require ('webpack');
 
 module.exports = function override(config) {
     const fallback = config.resolve.fallback || {};
@@ -19,6 +19,11 @@ module.exports = function override(config) {
         "crypto-browserify": false
     });
     config.resolve.fallback = fallback;
+    config.plugins = (config.plugins || []).concat([
+        new webpack.ProvidePlugin({
+            process:'process/browser',
+        }),
+    ]);
 
     return config;
 }
