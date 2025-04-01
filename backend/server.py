@@ -18,6 +18,12 @@ workouts_collection = db.get_collection("workouts")
 # OpenAI API key (set your key in the OPENAI_API_KEY env variable)
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({
+        "message": "server is running!"
+    })
+
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.json
