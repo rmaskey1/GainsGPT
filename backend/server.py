@@ -1,4 +1,3 @@
-# app.py
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
@@ -105,4 +104,4 @@ def get_workout(workout_id):
     return jsonify({"error": "Workout not found"}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
