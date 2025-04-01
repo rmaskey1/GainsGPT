@@ -15,6 +15,7 @@ module.exports = function override(config) {
         "https": false,
         "stream": false,
         "crypto": false,
+        "os": false,
         "crypto-browserify": false
     });
     config.resolve.fallback = fallback;
