@@ -15,7 +15,7 @@ const WorkoutList = () => {
       if (location.state?.workout && !hasPosted.current) {
         try {
           hasPosted.current = true;  // Mark as posted immediately to prevent double posting
-          await axios.post(`${process.env.BACKEND_SERVER}/workouts`, location.state.workout);
+          await axios.post(`${process.env.REACT_APP_BACKEND_SERVER}/workouts`, location.state.workout);
           // Clear the location state
           navigate(location.pathname, { replace: true });
           // Fetch the updated list
@@ -32,7 +32,7 @@ const WorkoutList = () => {
 
   const fetchWorkouts = async () => {
     try {
-      const response = await axios.get(`${process.env.BACKEND_SERVER}/workouts`);
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER}/workouts`);
       setWorkouts(response.data);
     } catch (error) {
       console.error("Error fetching workouts", error);

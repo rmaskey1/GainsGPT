@@ -5,6 +5,9 @@ import os
 from pymongo import MongoClient
 from bson import ObjectId
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -23,6 +26,14 @@ def home():
     return jsonify({
         "message": "server is running!"
     })
+
+@app.route('/test_connection', methods=['GET'])
+def test_connection():
+    try:
+        client.admin.command('ping')
+        return jsonify({"message": "Connection successful!"})
+    except Exception as e:
+        return jsonify({"message": f"Connection failed: {e}"})
 
 @app.route('/chat', methods=['POST'])
 def chat():
