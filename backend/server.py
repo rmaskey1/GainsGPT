@@ -14,7 +14,34 @@ CORS(app)
 
 # Connect to MongoDB Atlas (set your connection string in the MONGO_URI env variable)
 MONGO_URI = os.environ.get("MONGO_URI")
-client = MongoClient(MONGO_URI)
+try:
+    # Try with SSL options first
+    client = MongoClient(
+        MONGO_URI,
+        tls=True,
+        tlsAllowInvalidCertificates=True,
+        retryWrites=True,
+        w='majority',
+        connectTimeoutMS=30000,
+        socketTimeoutMS=None,
+        socketKeepAlive=True,
+        connect=False,
+        maxPoolsize=1
+    )
+    # Test the connection
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(f"MongoDB connection error: {e}")
+    # Fallback to direct connection if the first attempt fails
+    try:
+        client = MongoClient(MONGO_URI)
+        client.admin.command('ping')
+        print("Connected to MongoDB without SSL")
+    except Exception as e2:
+        print(f"Fallback connection failed: {e2}")
+        raise
+
 db = client.get_database("workoutDB")
 workouts_collection = db.get_collection("workouts")
 
