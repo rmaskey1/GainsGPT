@@ -14,34 +14,7 @@ CORS(app)
 
 # Connect to MongoDB Atlas (set your connection string in the MONGO_URI env variable)
 MONGO_URI = os.environ.get("MONGO_URI")
-try:
-    # Try with SSL options first
-    client = MongoClient(
-        MONGO_URI,
-        tls=True,
-        tlsAllowInvalidCertificates=True,
-        retryWrites=True,
-        w='majority',
-        connectTimeoutMS=30000,
-        socketTimeoutMS=None,
-        socketKeepAlive=True,
-        connect=False,
-        maxPoolsize=1
-    )
-    # Test the connection
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(f"MongoDB connection error: {e}")
-    # Fallback to direct connection if the first attempt fails
-    try:
-        client = MongoClient(MONGO_URI)
-        client.admin.command('ping')
-        print("Connected to MongoDB without SSL")
-    except Exception as e2:
-        print(f"Fallback connection failed: {e2}")
-        raise
-
+client = MongoClient(MONGO_URI)
 db = client.get_database("workoutDB")
 workouts_collection = db.get_collection("workouts")
 
@@ -51,7 +24,8 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 @app.route('/', methods=['GET'])
 def home():
     return jsonify({
-        "message": "server is running!"
+        "message": "server is running!",
+        "database_connected": db is not None and workouts_collection is not None
     })
 
 @app.route('/test_connection', methods=['GET'])
@@ -147,5 +121,27 @@ def get_workout(workout_id):
         return jsonify(workout)
     return jsonify({"error": "Workout not found"}), 404
 
+@app.route('/health')
+def health_check():
+    """Health check endpoint to verify database connectivity"""
+    try:
+        if db is None or workouts_collection is None:
+            return jsonify({"status": "error", "message": "Database not connected"}), 500
+        
+        # Test the database connection
+        db.command('ping')
+        return jsonify({
+            "status": "success",
+            "database": "connected",
+            "collections": {
+                "workouts": workouts_collection.name
+            }
+        })
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
