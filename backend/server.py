@@ -91,7 +91,61 @@ def chat():
     else:
         full_message = message
 
-    # Call the OpenAI API
+    # Check if OpenAI API key is missing and it's a workout request
+    if not OPENAI_API_KEY and is_workout_request:
+        sample_workout = {
+            "message": "AI functionality is temporarily restricted. Here's a sample workout plan:",
+            "workout_title": "Sample Full Body Workout",
+            "workout_schedule": [
+                {
+                    "day": "Monday",
+                    "workout_description": "Upper Body Strength",
+                    "workout": [
+                        {
+                            "exercise_name": "Push-ups",
+                            "exercise_description": "Standard push-ups",
+                            "exercise_sets": "3",
+                            "exercise_reps": "10-12"
+                        },
+                        {
+                            "exercise_name": "Dumbbell Shoulder Press",
+                            "exercise_description": "Seated or standing shoulder press",
+                            "exercise_sets": "3",
+                            "exercise_reps": "8-10"
+                        }
+                    ]
+                },
+                {
+                    "day": "Wednesday",
+                    "workout_description": "Lower Body & Core",
+                    "workout": [
+                        {
+                            "exercise_name": "Bodyweight Squats",
+                            "exercise_description": "Standard squats",
+                            "exercise_sets": "3",
+                            "exercise_reps": "12-15"
+                        },
+                        {
+                            "exercise_name": "Plank",
+                            "exercise_description": "Forearm plank",
+                            "exercise_sets": "3",
+                            "exercise_reps": "30-45 seconds"
+                        }
+                    ]
+                }
+            ]
+        }
+        return jsonify({
+            "choices": [{
+                "message": {
+                    "role": "assistant",
+                    "content": json.dumps(sample_workout)
+                }
+            }],
+            "workout_data": sample_workout
+        })
+
+    # Call the OpenAI API if key is present
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}"
