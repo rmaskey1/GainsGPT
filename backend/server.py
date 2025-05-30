@@ -5,6 +5,9 @@ import os
 from pymongo import MongoClient
 from bson import ObjectId
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -21,8 +24,37 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 @app.route('/', methods=['GET'])
 def home():
     return jsonify({
-        "message": "server is running!"
+        "message": "server is running!",
+        "database_connected": db is not None and workouts_collection is not None
     })
+
+@app.route('/test_connection', methods=['GET'])
+def test_connection():
+    try:
+        client.admin.command('ping')
+        return jsonify({"message": "Connection successful!"})
+    except Exception as e:
+        return jsonify({"message": f"Connection failed: {e}"})
+
+@app.route('/debug/env', methods=['GET'])
+def debug_env():
+    """Debug endpoint to check environment variables"""
+    return jsonify({
+        "OPENAI_API_KEY_set": bool(os.environ.get('OPENAI_API_KEY')),
+        "OPENAI_API_KEY_length": len(os.environ.get('OPENAI_API_KEY', '')),
+        "MONGO_URI_set": bool(os.environ.get('MONGO_URI')),
+        "all_env_vars": {k: f"{'*' * 8}{v[-4:] if v else ''}" 
+                         for k, v in os.environ.items() if 'KEY' in k or 'URI' in k or 'SECRET' in k}
+    })
+
+@app.route('/debug/check_openai_key', methods=['GET'])
+def debug_check_openai_key():
+    openai_key = os.environ.get('OPENAI_API_KEY')
+    if not openai_key:
+        print("ERROR: OPENAI_API_KEY not found in environment variables")
+        print("Available environment variables:", os.environ.keys())
+        return jsonify({"error": "OpenAI API key not configured"}), 500
+    return jsonify({"message": "OpenAI API key is configured"})
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -62,19 +94,39 @@ def chat():
     # Call the OpenAI API
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY', 'your_openai_api_key')}"
+        "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}"
     }
+    
+    # Simple message structure without system message
+    messages = [{"role": "user", "content": full_message}]
+    
     payload = {
         "model": "gpt-3.5-turbo",
-        "messages": [
-            {"role": "user", "content": full_message}
-        ]
+        "messages": messages,
+        "temperature": 0.7,
+        "max_tokens": 1000
     }
-    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-    if response.status_code != 200:
-        return jsonify({"error": "Failed to get response from OpenAI"}), response.status_code
-
-    openai_response = response.json()
+    
+    try:
+        response = requests.post(
+            "https://api.openai.com/v1/chat/completions",
+            headers=headers,
+            json=payload,
+            timeout=30  # 30 second timeout
+        )
+        response.raise_for_status()  # This will raise an HTTPError for bad responses (4xx, 5xx)
+        openai_response = response.json()
+        
+    except requests.exceptions.RequestException as e:
+        error_msg = f"Error calling OpenAI API: {str(e)}"
+        print(error_msg)
+        if hasattr(e, 'response') and e.response is not None:
+            error_msg += f"\nResponse: {e.response.text}"
+        return jsonify({"error": error_msg}), 500
+    
+    # Check if the response has the expected structure
+    if not openai_response.get('choices') or not openai_response['choices']:
+        return jsonify({"error": "Unexpected response format from OpenAI"}), 500
 
     # If it's a workout request, attempt to parse the JSON response
     if is_workout_request:
@@ -109,5 +161,27 @@ def get_workout(workout_id):
         return jsonify(workout)
     return jsonify({"error": "Workout not found"}), 404
 
+@app.route('/health')
+def health_check():
+    """Health check endpoint to verify database connectivity"""
+    try:
+        if db is None or workouts_collection is None:
+            return jsonify({"status": "error", "message": "Database not connected"}), 500
+        
+        # Test the database connection
+        db.command('ping')
+        return jsonify({
+            "status": "success",
+            "database": "connected",
+            "collections": {
+                "workouts": workouts_collection.name
+            }
+        })
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
