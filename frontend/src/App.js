@@ -5,7 +5,7 @@ import HomePage from './components/HomePage';
 import ChatBot from './components/ChatBot';
 import WorkoutList from './components/WorkoutList';
 import WorkoutDetail from './components/WorkoutDetail';
-import './App.css';  // Make sure this is imported
+import './App.css';
 import '@fontsource/plus-jakarta-sans/400.css';
 import '@fontsource/plus-jakarta-sans/500.css';
 import '@fontsource/plus-jakarta-sans/600.css';
